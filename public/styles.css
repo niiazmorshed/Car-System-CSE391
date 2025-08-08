@@ -1548,3 +1548,58 @@ body {
         font-size: var(--font-size-xl);
     }
 }
+
+.mechanic-card {
+    background: #fff;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+}
+
+.mechanic-card.available {
+    border-color: #38a169;
+}
+
+.mechanic-card.available:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.mechanic-card.unavailable {
+    opacity: 0.6;
+    cursor: not-allowed;
+    border-color: #e53e3e;
+}
+
+.mechanic-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.mechanic-specialization {
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.mechanic-experience {
+    color: #888;
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+.availability.available {
+    color: #38a169;
+    font-weight: 500;
+}
+
+.availability.fully-booked {
+    color: #e53e3e;
+    font-weight: 500;
+}

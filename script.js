@@ -79,7 +79,7 @@ async function loadMechanics(specificDate = null) {
 }
 
 function updateMechanicsGrid(mechanicsData) {
-    console.log('🎰 SLOT-BASED: Updating mechanics grid...');
+    console.log('🎰 SLOT-BASED: Updating mechanics grid...', mechanicsData);
     
     const mechanicsGrid = document.getElementById('mechanicsGrid');
     if (!mechanicsGrid) {
@@ -89,8 +89,15 @@ function updateMechanicsGrid(mechanicsData) {
     
     mechanicsGrid.innerHTML = '';
     
-    mechanicsData.forEach(mechanic => {
-        // 🎰 CRITICAL: Use the correct field names from SLOT-BASED API
+    // Make sure mechanicsData is an array
+    const mechanics = Array.isArray(mechanicsData) ? mechanicsData : [];
+    
+    if (mechanics.length === 0) {
+        mechanicsGrid.innerHTML = '<p>No mechanics available</p>';
+        return;
+    }
+    
+    mechanics.forEach(mechanic => {
         const availableSlots = mechanic.availableSlots || 0;
         const totalSlots = mechanic.totalSlots || 4;
         
@@ -118,15 +125,11 @@ function updateMechanicsGrid(mechanicsData) {
         }
         
         mechanicsGrid.appendChild(mechanicCard);
-        
-        // Special logging for David Wilson
-        if (mechanic.name === 'David Wilson') {
-            console.log(`🎯 DAVID WILSON SLOT-BASED CARD: ${availabilityText}`);
-        }
     });
     
     console.log('✅ SLOT-BASED: Grid updated successfully');
 }
+
 
 function selectMechanic(mechanic) {
     if (mechanic.availableSlots <= 0) {

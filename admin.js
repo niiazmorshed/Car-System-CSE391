@@ -18,32 +18,36 @@ async function init() {
     setupEventListeners();
 }
 
-async function loadMechanics() {
+async function loadMechanics(specificDate = null) {
+    console.log('🎰 SLOT-BASED FRONTEND: Loading mechanics...');
+    
     try {
-        console.log('📡 SLOT-BASED ADMIN: Loading mechanics...');
+        let url = 'https://car-system-hazel.vercel.app/api/get_mechanics';
+        if (specificDate) {
+            url += `?date=${specificDate}`;
+        }
         
-        const response = await fetch(`${API_BASE_URL}/get_mechanics.php?v=${Date.now()}`);
+        const response = await fetch(url);
         const data = await response.json();
+        console.log('🎰 SLOT-BASED API Response:', data);
         
         if (data.success && data.mechanics) {
-            allMechanics = data.mechanics;
-            console.log('✅ SLOT-BASED ADMIN: Mechanics loaded:', allMechanics.length);
+            // Extract the mechanics array from the response
+            const mechanicsArray = data.mechanics;
+            console.log('✅ SLOT-BASED: Mechanics loaded:', mechanicsArray.length);
             
-            // Populate mechanic filter
-            const mechanicFilter = document.getElementById('mechanicFilter');
-            mechanicFilter.innerHTML = '<option value="">All Mechanics</option>';
+            updateMechanicsGrid(mechanicsArray); // Pass the array directly
             
-            allMechanics.forEach(mechanic => {
-                const option = document.createElement('option');
-                option.value = mechanic._id;
-                option.textContent = `${mechanic.name} (${mechanic.availableSlots}/${mechanic.totalSlots} slots)`;
-                mechanicFilter.appendChild(option);
-            });
+        } else {
+            console.error('❌ Failed to load mechanics:', data.message);
+            showError('Failed to load mechanics: ' + data.message);
         }
     } catch (error) {
         console.error('❌ Error loading mechanics:', error);
+        showError('Connection error: ' + error.message);
     }
 }
+
 
 async function loadAppointments() {
     try {
