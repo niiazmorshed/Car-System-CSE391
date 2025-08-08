@@ -52,7 +52,14 @@ try {
     logBooking("🎰 SLOT-BASED: Starting appointment booking", $input);
     
     // MongoDB connection
-    $client = new MongoDB\Client($mongoUri);
+    require_once 'config.php';
+$client = new \MongoDB\Client($mongoUri, [
+    'typeMap' => [
+        'root' => 'array',
+        'document' => 'array',
+        'array' => 'array'
+    ]
+]);
     $database = $client->selectDatabase($databaseName);
     
     // Test connection

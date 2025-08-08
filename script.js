@@ -1,7 +1,7 @@
 // script.js - SLOT-BASED FRONTEND SYSTEM
 console.log('🎰 SLOT-BASED FRONTEND: Loading...');
 
-const API_BASE_URL = '/api';
+const API_BASE_URL = 'https://car-system-hazel.vercel.app/api';
 
 // Global variables
 let mechanics = [];

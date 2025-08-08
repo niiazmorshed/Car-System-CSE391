@@ -1,7 +1,7 @@
 // admin.js - SLOT-BASED ADMIN PANEL
 console.log('🎰 SLOT-BASED ADMIN: Loading...');
 
-const API_BASE_URL = '/api';
+const API_BASE_URL = 'https://car-system-hazel.vercel.app/api';
 
 let allAppointments = [];
 let allMechanics = [];
