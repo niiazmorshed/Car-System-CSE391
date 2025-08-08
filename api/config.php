@@ -1,5 +1,5 @@
 <?php
-// Vercel PHP serverless function config
+// Vercel PHP serverless function config - NO COMPOSER NEEDED
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
@@ -10,12 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);
 }
 
-// MongoDB connection
+// MongoDB connection - Vercel PHP runtime has MongoDB extension built-in
 $mongoUri = $_ENV['MONGO_URI'] ?? "mongodb+srv://carSystem:qIXG8p0wm1mPVPYl@cluster0.pyoefad.mongodb.net/carSystem?retryWrites=true&w=majority";
 $databaseName = "carSystem";
-
-// Vercel automatically includes MongoDB extension for PHP
-// No need for vendor/autoload.php with vercel-php runtime
 
 date_default_timezone_set('UTC');
 ini_set('display_errors', 0);
