@@ -1,0 +1,116 @@
+{
+  "database": "carSystem",
+  "collections": {
+    "mechanics": [
+      {
+        "name": "David Wilson",
+        "email": "david.wilson@autofix.com",
+        "contact": "0134567890",
+        "specialization": "Transmission & Drivetrain",
+        "experience": 10,
+        "shift": "Full Day",
+        "hourlyRate": 85.0,
+        "available": true,
+        "availableSlots": 3,
+        "totalSlots": 4,
+        "createdAt": {"$date": "2025-08-08T00:00:00.000Z"},
+        "updatedAt": {"$date": "2025-08-08T00:00:00.000Z"}
+      },
+      {
+        "name": "James Davis",
+        "email": "james.davis@autofix.com",
+        "contact": "0156789012",
+        "specialization": "General Maintenance & Oil Change",
+        "experience": 5,
+        "shift": "Morning",
+        "hourlyRate": 65.0,
+        "available": true,
+        "availableSlots": 4,
+        "totalSlots": 4,
+        "createdAt": {"$date": "2025-08-08T00:00:00.000Z"},
+        "updatedAt": {"$date": "2025-08-08T00:00:00.000Z"}
+      },
+      {
+        "name": "John Smith",
+        "email": "john.smith@autofix.com",
+        "contact": "0987654321",
+        "specialization": "Brake Systems & Suspension",
+        "experience": 6,
+        "shift": "Afternoon",
+        "hourlyRate": 70.0,
+        "available": true,
+        "availableSlots": 4,
+        "totalSlots": 4,
+        "createdAt": {"$date": "2025-08-08T00:00:00.000Z"},
+        "updatedAt": {"$date": "2025-08-08T00:00:00.000Z"}
+      },
+      {
+        "name": "Mike Johnson",
+        "email": "mike.johnson@autofix.com",
+        "contact": "0123456789",
+        "specialization": "Engine Repair & Diagnostics",
+        "experience": 8,
+        "shift": "Morning",
+        "hourlyRate": 75.0,
+        "available": true,
+        "availableSlots": 4,
+        "totalSlots": 4,
+        "createdAt": {"$date": "2025-08-08T00:00:00.000Z"},
+        "updatedAt": {"$date": "2025-08-08T00:00:00.000Z"}
+      },
+      {
+        "name": "Robert Brown",
+        "email": "robert.brown@autofix.com",
+        "contact": "0145678901",
+        "specialization": "Electrical Systems & A/C",
+        "experience": 7,
+        "shift": "Evening",
+        "hourlyRate": 80.0,
+        "available": true,
+        "availableSlots": 4,
+        "totalSlots": 4,
+        "createdAt": {"$date": "2025-08-08T00:00:00.000Z"},
+        "updatedAt": {"$date": "2025-08-08T00:00:00.000Z"}
+      }
+    ],
+    "appointments": [
+      {
+        "clientName": "Peter",
+        "clientPhone": "0123456789",
+        "clientAddress": "123 Main Street, Dhaka",
+        "carLicense": "ABC123",
+        "carEngine": "ENG12345",
+        "appointmentDate": {"$date": "2025-08-08T00:00:00.000Z"},
+        "mechanicId": "REPLACE_WITH_DAVID_WILSON_ID",
+        "status": "confirmed",
+        "notes": "Regular maintenance check",
+        "createdAt": {"$date": "2025-08-07T10:00:00.000Z"},
+        "updatedAt": {"$date": "2025-08-07T10:00:00.000Z"}
+      }
+    ]
+  },
+  "instructions": {
+    "setup": [
+      "1. Import this data into MongoDB Compass or use mongoimport",
+      "2. Create database named 'carSystem'",
+      "3. Import mechanics collection first",
+      "4. Copy one of the mechanic ObjectIds and replace 'REPLACE_WITH_DAVID_WILSON_ID' in appointments",
+      "5. Import appointments collection",
+      "6. Run initialize_mechanics.php to set up the slot-based system properly"
+    ],
+    "systemType": "SLOT_BASED",
+    "slotLogic": {
+      "availableSlots": "Current number of available slots (decreases when booking)",
+      "totalSlots": "Maximum slots per day (always 4)",
+      "booking": "Decreases availableSlots by 1 when confirmed/pending/in-progress",
+      "completion": "Increases availableSlots by 1 when completed/cancelled",
+      "display": "Shows availableSlots/totalSlots (e.g., '3/4 slots available')"
+    },
+    "expectedResult": {
+      "davidWilson": "3/4 slots available (has 1 confirmed appointment)",
+      "others": "4/4 slots available (no appointments)",
+      "afterBooking": "Selected mechanic's slots decrease by 1",
+      "afterCompletion": "Mechanic's slots increase by 1"
+    }
+  }
+}

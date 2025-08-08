@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Workshop - Admin Panel</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="header-content">
+                <h1>⚙️ Joy Bangla Workshop - Admin</h1>
+                <p>Manage appointments and mechanics</p>
+                <nav class="nav-links">
+                    <a href="index.html">Book Appointment</a>
+                    <a href="admin.html" class="active">Admin Panel</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="section-header">
+                <h2>Appointment Management</h2>
+                <p>View, edit, and manage all appointments</p>
+            </div>
+
+            <!-- Admin Controls -->
+            <div class="admin-controls">
+                <div class="search-filter">
+                    <input type="date" id="dateFilter" placeholder="Filter by date">
+                    <select id="mechanicFilter">
+                        <option value="">All Mechanics</option>
+                    </select>
+                    <select id="statusFilter">
+                        <option value="">All Statuses</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                    <button class="btn-primary" onclick="refreshAppointments()">Refresh</button>
+                </div>
+                
+                <div class="stats-summary" id="statsSummary">
+                    <!-- Stats will be dynamically loaded -->
+                </div>
+            </div>
+
+            <!-- Appointments Table -->
+            <div class="appointments-table-container">
+                <table class="appointments-table">
+                    <thead>
+                        <tr>
+                            <th>Client Name</th>
+                            <th>Phone</th>
+                            <th>Car License</th>
+                            <th>Appointment Date</th>
+                            <th>Mechanic</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointmentsTableBody">
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 20px;">
+                                Loading appointments...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+        <!-- Status Update Modal -->
+        <div id="statusModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Update Appointment Status</h3>
+                    <button class="close-btn" onclick="closeModal('statusModal')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="statusSelect">Status:</label>
+                        <select id="statusSelect">
+                            <option value="confirmed">Confirmed</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <input type="hidden" id="currentAppointmentId">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-primary" onclick="updateStatus()">Update Status</button>
+                    <button class="btn-secondary" onclick="closeModal('statusModal')">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="successModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>✅ Status Updated!</h3>
+                    <button class="close-btn" onclick="closeModal('successModal')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p id="successMessage">Status updated successfully!</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-primary" onclick="closeModal('successModal')">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Modal -->
+        <div id="errorModal" class="modal">
+            <div class="modal-content error">
+                <div class="modal-header">
+                    <h3>❌ Update Failed</h3>
+                    <button class="close-btn" onclick="closeModal('errorModal')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Something went wrong. Please try again.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary" onclick="closeModal('errorModal')">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Details Modal -->
+        <div id="detailsModal" class="modal">
+            <div class="modal-content large">
+                <div class="modal-header">
+                    <h3>📋 Appointment Details</h3>
+                    <button class="close-btn" onclick="closeModal('detailsModal')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="appointmentDetailsContent">
+                        <!-- Details will be loaded here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-primary" onclick="closeModal('detailsModal')">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Help Section -->
+        <section class="help-section">
+            <h3>Admin Panel Guide</h3>
+            <div class="help-content">
+                <div class="help-item">
+                    <strong>📅 Filter appointments:</strong>
+                    <p>Use date, mechanic, and status filters to find specific appointments.</p>
+                </div>
+                <div class="help-item">
+                    <strong>🔄 Update status:</strong>
+                    <p>Change appointment status using the dropdown and update button.</p>
+                </div>
+                <div class="help-item">
+                    <strong>👁️ View details:</strong>
+                    <p>Click Details button to see complete appointment information.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

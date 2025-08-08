@@ -1,0 +1,6 @@
+{
+  "name": "car-workshop-slot-system",
+  "dependencies": {
+    "mongodb": "^6.18.0"
+  }
+}

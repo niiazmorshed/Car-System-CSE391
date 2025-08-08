@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Car Workshop - Book Appointment</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header Section -->
+      <header class="header">
+        <div class="header-content">
+          <h1>🔧 Joy Bangla Workshop</h1>
+          <p>Expert Car Service & Repairs</p>
+          <nav class="nav-links">
+            <a href="index.html" class="active">Book Appointment</a>
+            <a href="admin.html">Admin Panel</a>
+          </nav>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="section-header">
+          <h2>Book Your Appointment</h2>
+          <p>Select your preferred mechanic and schedule your car service</p>
+        </div>
+
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="loading">
+          <div class="spinner"></div>
+          <p>Loading mechanics...</p>
+        </div>
+
+        <!-- Mechanics Grid -->
+        <div id="mechanicsGrid" class="mechanics-grid" style="display: none">
+          <!-- Mechanics will be dynamically loaded here -->
+        </div>
+
+        <!-- Appointment Form -->
+        <form
+          id="appointmentForm"
+          class="appointment-form"
+          style="display: none"
+        >
+          <div class="form-row">
+            <div class="form-group">
+              <label for="clientName">Full Name *</label>
+              <input
+                type="text"
+                id="clientName"
+                name="clientName"
+                required
+                pattern="[A-Za-z\s]{2,}"
+                title="Name must contain only letters and spaces, minimum 2 characters"
+                autocomplete="name"
+              />
+            </div>
+            <div class="form-group">
+              <label for="clientPhone">Phone Number *</label>
+              <input
+                type="tel"
+                id="clientPhone"
+                name="clientPhone"
+                required
+                pattern="[0-9+\-\s\(\)]{10,}"
+                title="Please enter a valid phone number (minimum 10 digits)"
+                autocomplete="tel"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="clientAddress">Address *</label>
+            <textarea
+              id="clientAddress"
+              name="clientAddress"
+              rows="2"
+              required
+              minlength="10"
+              placeholder="Enter your full address"
+              autocomplete="street-address"
+            ></textarea>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="carLicense">Car License Number *</label>
+              <input
+                type="text"
+                id="carLicense"
+                name="carLicense"
+                required
+                pattern="[A-Z0-9\-]{3,}"
+                title="License number must be at least 3 characters"
+                style="text-transform: uppercase"
+                placeholder="ABC-123"
+                autocomplete="off"
+              />
+            </div>
+            <div class="form-group">
+              <label for="carEngine">Car Engine Number *</label>
+              <input
+                type="text"
+                id="carEngine"
+                name="carEngine"
+                required
+                pattern="[A-Z0-9]{5,}"
+                title="Engine number must be at least 5 characters"
+                style="text-transform: uppercase"
+                placeholder="ENG12345"
+                autocomplete="off"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="appointmentDate">Appointment Date *</label>
+              <input
+                type="date"
+                id="appointmentDate"
+                name="appointmentDate"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="selectedMechanic">Select Mechanic *</label>
+              <select id="selectedMechanic" name="selectedMechanic">
+                <option value="">Choose a mechanic</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="notes">Additional Notes (Optional)</label>
+            <textarea
+              id="notes"
+              name="notes"
+              rows="3"
+              placeholder="Any specific issues or requirements..."
+            ></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">
+              <span>Book Appointment</span>
+            </button>
+            <button type="button" class="btn-secondary" onclick="resetForm()">
+              <span>Reset Form</span>
+            </button>
+          </div>
+        </form>
+      </main>
+
+      <!-- Error Modal -->
+      <div id="errorModal" class="modal">
+        <div class="modal-content error">
+          <div class="modal-header">
+            <h3>Connection Error</h3>
+            <button class="close-btn" onclick="closeModal('errorModal')">
+              &times;
+            </button>
+          </div>
+          <div class="modal-body">
+            <p id="errorMessage">
+              Unable to connect to server. Please try again.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Success Modal -->
+      <div id="successModal" class="modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>✅ Appointment Booked!</h3>
+            <button class="close-btn" onclick="closeModal('successModal')">
+              &times;
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Your appointment has been successfully booked.</p>
+            <div class="appointment-details">
+              <p><strong>Appointment Details:</strong></p>
+              <div id="appointmentDetails"></div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-primary" onclick="closeModal('successModal')">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Booking Error Modal -->
+      <div id="bookingErrorModal" class="modal">
+        <div class="modal-content error">
+          <div class="modal-header">
+            <h3>❌ Booking Failed</h3>
+            <button class="close-btn" onclick="closeModal('bookingErrorModal')">
+              &times;
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="bookingErrorMessage"></div>
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn-secondary"
+              onclick="closeModal('bookingErrorModal')"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Help Section -->
+      <section class="help-section">
+        <h3>Need Help?</h3>
+        <div class="help-content">
+          <div class="help-item">
+            <strong>How to book:</strong>
+            <p>
+              Fill in your details, select an available mechanic, and choose
+              your preferred date.
+            </p>
+          </div>
+          <div class="help-item">
+            <strong>Mechanic availability:</strong>
+            <p>
+              Each mechanic can handle maximum 4 appointments per day. Green
+              indicates available slots.
+            </p>
+          </div>
+          <div class="help-item">
+            <strong>Appointment policy:</strong>
+            <p>
+              You can only book one appointment per day. Contact us for urgent
+              services.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script src="script.js"></script>
+
+    <script>
+      // Additional form utilities
+      function resetForm() {
+        const form = document.getElementById("appointmentForm");
+        form.reset();
+        form.style.display = "none";
+
+        // Clear selected mechanic
+        selectedMechanic = null;
+        document.querySelectorAll(".mechanic-card").forEach((card) => {
+          card.classList.remove("selected");
+        });
+
+        console.log("✅ Form reset");
+      }
+
+      function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.classList.remove("show");
+      }
+
+      // Form validation enhancements
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("appointmentForm");
+
+        // Phone number formatting
+        const phoneInput = document.getElementById("clientPhone");
+        phoneInput.addEventListener("input", function () {
+          let value = this.value.replace(/\D/g, "");
+          if (value.length >= 10) {
+            value = value.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
+          }
+          this.value = value;
+        });
+
+        // License plate formatting
+        const licenseInput = document.getElementById("carLicense");
+        licenseInput.addEventListener("input", function () {
+          this.value = this.value.toUpperCase().replace(/[^A-Z0-9\-]/g, "");
+        });
+
+        // Engine number formatting
+        const engineInput = document.getElementById("carEngine");
+        engineInput.addEventListener("input", function () {
+          this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, "");
+        });
+
+        // Real-time validation
+        const inputs = form.querySelectorAll(
+          "input[required], textarea[required], select[required]"
+        );
+        inputs.forEach((input) => {
+          input.addEventListener("blur", function () {
+            if (!this.value.trim()) {
+              this.classList.add("error");
+            } else {
+              this.classList.remove("error");
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
